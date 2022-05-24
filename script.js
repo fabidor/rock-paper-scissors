@@ -3,15 +3,19 @@ function computerChoose(){
     return arr[Math.floor(Math.random()*arr.length)];
 }
 
-function RPS(){
+//let result;
+//let buttons = document.querySelectorAll('button');
+//buttons.forEach((button) => button.addEventListener('click', () => {
+    //result = RPS(button.id)
+    //console.log(result)
+//}));
+
+
+function RPS(personChoice){
     let compChoice = computerChoose();
     console.log(compChoice);
-    let personChoice = prompt("Choose Rock, Paper, or Scissors", "").toLowerCase();
     console.log(personChoice);
-    if (personChoice != "rock" && personChoice != "paper" && personChoice != "scissors"){
-        console.log("You didn't put in one of the choices, numbnuts.");
-        return;
-    } else if (personChoice == compChoice){
+    if (personChoice == compChoice){
         console.log("Tie Game!");
         return;
     } else if(personChoice == "rock" && compChoice == "paper" || personChoice == "paper" && compChoice == "scissors" || personChoice == "scissors" && compChoice == "rock"){
@@ -22,22 +26,39 @@ function RPS(){
         return "PersonWin";
     }
 }
-
-function fullGame(){
     let compScore = 0;
     let humScore = 0;
-    while(compScore < 3 && humScore < 3){
-        let result = RPS();
-        if (result == "CompWin"){
+    const scoreBoard = document.querySelector("#Scores");
+    const compY = document.createElement('div');
+    compY.textContent=`The Computer's Score is ${compScore}`;
+    const persY = document.createElement('div');
+    persY.textContent= `Your Score is ${humScore}`;
+    scoreBoard.appendChild(compY);
+    scoreBoard.appendChild(persY);
+    let gameBoard = document.querySelector('#gameBoard');
+    let btns = document.querySelector(".RPSButtons")
+
+
+function fullGame(){
+   
+    let buttons = document.querySelectorAll('button');
+    buttons.forEach((button) => button.addEventListener('click', () => { 
+        let result = RPS(button.id)
+        if(result == "CompWin"){
             compScore ++;
-        } else if (result == "PersonWin"){
-            humScore ++;
+            console.log(compScore);
+            compY.textContent = `The Computer's Score is ${compScore}`;
+        } else if(result =="PersonWin"){
+            humScore++;
+            console.log(humScore);
+            persY.textContent= `Your Score is ${humScore}`;
         }
-    }
-    if (compScore>humScore){
-        console.log("Computer Wins!")
-    } else{
-        console.log("You Win!")
-    }
+        if(compScore == 3){
+            gameBoard.removeChild(btns)
+        } else if(humScore == 3){
+            console.log("Ultimate Victory!!")
+        }
+    }));
+    
 }
 fullGame();
