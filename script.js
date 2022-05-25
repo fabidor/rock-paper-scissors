@@ -2,45 +2,57 @@ let arr = ["rock", "paper", "scissors"]
 function computerChoose(){
     return arr[Math.floor(Math.random()*arr.length)];
 }
+let compScore = 0;
+let humScore = 0;
+const scoreBoard = document.querySelector("#Scores");
+const compY = document.createElement('div');
+compY.textContent=`The Computer's Score is ${compScore}`;
+const persY = document.createElement('div');
+persY.textContent= `Your Score is ${humScore}`;
+scoreBoard.appendChild(compY);
+scoreBoard.appendChild(persY);
+const gameWin = document.createElement('div');
+gameWin.textContent=`You Win!`
+const gameLose=document.createElement('div');
+gameLose.textContent= `You Lose!`
+const tieGame=document.createElement('div');
+tieGame.textContent= `Tie Game!`
 
-//let result;
-//let buttons = document.querySelectorAll('button');
-//buttons.forEach((button) => button.addEventListener('click', () => {
-    //result = RPS(button.id)
-    //console.log(result)
-//}));
-
-
+function removeGameResults(){
+    if (scoreBoard.contains(gameWin)){
+        scoreBoard.removeChild(gameWin);
+    } if (scoreBoard.contains(gameLose)){
+        scoreBoard.removeChild(gameLose);
+    } if (scoreBoard.contains(tieGame)){
+        scoreBoard.removeChild(tieGame);
+    }
+}
 function RPS(personChoice){
     let compChoice = computerChoose();
-    console.log(compChoice);
-    console.log(personChoice);
+    removeGameResults();
     if (personChoice == compChoice){
-        console.log("Tie Game!");
+        scoreBoard.appendChild(tieGame);
         return;
     } else if(personChoice == "rock" && compChoice == "paper" || personChoice == "paper" && compChoice == "scissors" || personChoice == "scissors" && compChoice == "rock"){
-        console.log(`You Lose! ${compChoice} beats ${personChoice}.`);
+        scoreBoard.appendChild(gameLose);
         return "CompWin";
     } else{
-        console.log(`You Win! ${personChoice} beats ${compChoice}.`);
+        scoreBoard.appendChild(gameWin);
         return "PersonWin";
     }
 }
-    let compScore = 0;
-    let humScore = 0;
-    const scoreBoard = document.querySelector("#Scores");
-    const compY = document.createElement('div');
-    compY.textContent=`The Computer's Score is ${compScore}`;
-    const persY = document.createElement('div');
-    persY.textContent= `Your Score is ${humScore}`;
-    scoreBoard.appendChild(compY);
-    scoreBoard.appendChild(persY);
+    
+
+    const victoryMessage=document.createElement('div');
+    victoryMessage.textContent="You Win!"
+    const defeatMessage=document.createElement('div');
+    defeatMessage.textContent="You Lose!"
     let gameBoard = document.querySelector('#gameBoard');
     let btns = document.querySelector(".RPSButtons")
+    
 
 
 function fullGame(){
-   
     let buttons = document.querySelectorAll('button');
     buttons.forEach((button) => button.addEventListener('click', () => { 
         let result = RPS(button.id)
@@ -55,8 +67,12 @@ function fullGame(){
         }
         if(compScore == 3){
             gameBoard.removeChild(btns)
+            gameBoard.removeChild(scoreBoard);
+            gameBoard.appendChild(defeatMessage);
         } else if(humScore == 3){
-            console.log("Ultimate Victory!!")
+            gameBoard.removeChild(btns)
+            gameBoard.removeChild(scoreBoard);
+            gameBoard.appendChild(victoryMessage);
         }
     }));
     
